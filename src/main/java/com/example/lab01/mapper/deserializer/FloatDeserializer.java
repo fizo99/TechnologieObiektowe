@@ -10,7 +10,7 @@ import java.io.IOException;
 public class FloatDeserializer extends JsonDeserializer<Float> {
 
     @Override
-    public Float deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public Float deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         var floatString = jsonParser.getText();
         if (floatString.contains(",")) {
             floatString = floatString.replace(",", ".");

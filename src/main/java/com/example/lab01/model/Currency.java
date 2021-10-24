@@ -4,7 +4,6 @@ import com.example.lab01.mapper.deserializer.FloatDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class Currency {

@@ -1,58 +1,56 @@
 package com.example.lab01.controller;
 
-import com.example.lab01.controller.exceptions.InvalidCurrencyException;
-import com.example.lab01.model.CurrencyCode;
+import com.example.lab01.controller.exception.InvalidCurrencyException;
+import com.example.lab01.controller.validator.ValidationException;
 import com.example.lab01.model.Exchange;
-import com.example.lab01.view.ExchangeConsoleView;
+import com.example.lab01.view.CurrencyExchangeConsoleView;
 import lombok.AllArgsConstructor;
-
-import java.util.Scanner;
 
 @AllArgsConstructor
 public class CurrencyExchangeController {
     private final CurrencyExchangeService currencyExchangeService;
-    private final ExchangeConsoleView view;
-    private final Exchange exchange;
-    private final Scanner scan = new Scanner(System.in);
+    private final CurrencyExchangeConsoleView view;
 
-    private final Validator<Float> floatValidator = new FloatValidator();
-    private final Validator<CurrencyCode> currencyCodeValidator = new CurrencyCodeValidator();
+    private final CurrencyExchangeInputReader inputReader = new CurrencyExchangeInputReader();
 
-    public void mainLoop() {
+    public void start() {
         view.displayGreeting();
         while (true) {
-            try {
-                view.askForFirstCurrency();
-                updateFirstCurrency(getInput(currencyCodeValidator));
-
-                view.askForSecondCurrency();
-                updateSecondCurrency(getInput(currencyCodeValidator));
-
-                view.askForFirstCurrencyQuantity();
-                updateFirstCurrencyQuantity(getInput(floatValidator));
-
-                var result = currencyExchangeService.calculateResult(exchange);
-                view.displayResult(result.toString());
-            } catch (ValidationException | InvalidCurrencyException exception) {
-                view.displayError(exception.getMessage());
-            }
+            processExchange();
         }
-
     }
 
-    public void updateFirstCurrencyQuantity(Float firstCurrencyQuantity) {
+    private void processExchange() {
+        Exchange exchange = new Exchange();
+        try {
+            view.askForFirstCurrency();
+            updateFirstCurrency(exchange);
+
+            view.askForSecondCurrency();
+            updateSecondCurrency(exchange);
+
+            view.askForFirstCurrencyQuantity();
+            updateFirstCurrencyQuantity(exchange);
+
+            var result = currencyExchangeService.calculateResult(exchange);
+            view.displayResult(result.toString());
+        } catch (ValidationException | InvalidCurrencyException exception) {
+            view.displayError(exception.getMessage());
+        }
+    }
+
+    private void updateFirstCurrencyQuantity(Exchange exchange) {
+        var firstCurrencyQuantity = inputReader.getNextFloat();
         exchange.setFirstCurrencyQuantity(firstCurrencyQuantity);
     }
 
-    private void updateFirstCurrency(CurrencyCode currencyCode) {
+    private void updateFirstCurrency(Exchange exchange) {
+        var currencyCode = inputReader.getNextCurrencyCode();
         exchange.setFirstCurrencyCode(currencyCode);
     }
 
-    private void updateSecondCurrency(CurrencyCode currencyCode) {
+    private void updateSecondCurrency(Exchange exchange) {
+        var currencyCode = inputReader.getNextCurrencyCode();
         exchange.setSecondCurrencyCode(currencyCode);
-    }
-
-    public <T> T getInput(Validator<T> validator) {
-        return validator.validate(scan.nextLine());
     }
 }

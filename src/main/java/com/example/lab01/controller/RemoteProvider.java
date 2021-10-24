@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.stream.Collectors;
 
-public class DataProvider {
+public class RemoteProvider {
     public static String get(String url) throws IOException {
         var connectionURL = new URL(url);
         var conn = (HttpURLConnection) connectionURL.openConnection();

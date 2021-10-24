@@ -1,10 +1,6 @@
 package com.example.lab01.view;
 
-import java.util.Scanner;
-
-public class ExchangeConsoleView {
-    private final Scanner scan = new Scanner(System.in);
-
+public class CurrencyExchangeConsoleView {
     private final String GREETING_MESSAGE = "Currency exchange";
     private final String ASK_FOR_FIRST_CURRENCY_CODE_MESSAGE = "Wprowadz kod pierwszej waluty";
     private final String ASK_FOR_SECOND_CURRENCY_CODE_MESSAGE = "Wprowadz kod drugiej waluty";

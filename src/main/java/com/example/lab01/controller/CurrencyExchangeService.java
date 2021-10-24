@@ -1,7 +1,6 @@
 package com.example.lab01.controller;
 
 import com.example.lab01.model.Exchange;
-import com.example.lab01.model.ExchangeRateTable;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
