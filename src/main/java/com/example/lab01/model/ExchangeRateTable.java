@@ -1,5 +1,6 @@
 package com.example.lab01.model;
 
+import com.example.lab01.controller.exceptions.InvalidCurrencyException;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
@@ -9,7 +10,6 @@ import lombok.Getter;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @JacksonXmlRootElement(localName = "tabela_kursow")
@@ -27,9 +27,12 @@ public class ExchangeRateTable {
     @JacksonXmlElementWrapper(useWrapping = false)
     private List<Currency> currencies;
 
-    public Optional<Currency> getByCode(CurrencyCode currencyCode) {
+    public Currency getByCode(String currencyCode) {
         return currencies.stream()
-                .filter(currency -> currency.getCode().equals(currencyCode))
-                .findFirst();
+                .filter(currency -> currency.getCode().toString().equals(currencyCode.toUpperCase()))
+                .findFirst()
+                .orElseThrow(() -> new InvalidCurrencyException("Unknown currency " + currencyCode));
     }
+
+
 }
