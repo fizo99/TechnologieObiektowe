@@ -12,23 +12,20 @@ public class ExchangeConsoleView {
     private final String RESULT_MESSAGE = "Wynik: %s";
     private final String ERROR_MESSAGE = "Blad: %s";
 
-    public String askForFirstCurrencyQuantity() {
+    public void askForFirstCurrencyQuantity() {
         System.out.println(ASK_FOR_FIRST_CURRENCY_QUANTITY_MESSAGE);
-        return getInput();
     }
 
     public void displayGreeting() {
         System.out.println(GREETING_MESSAGE);
     }
 
-    public String askForFirstCurrency() {
+    public void askForFirstCurrency() {
         System.out.println(ASK_FOR_FIRST_CURRENCY_CODE_MESSAGE);
-        return getInput();
     }
 
-    public String askForSecondCurrency() {
+    public void askForSecondCurrency() {
         System.out.println(ASK_FOR_SECOND_CURRENCY_CODE_MESSAGE);
-        return getInput();
     }
 
     public void displayResult(String result) {
@@ -37,9 +34,5 @@ public class ExchangeConsoleView {
 
     public void displayError(String error) {
         System.out.printf((ERROR_MESSAGE) + "%n", error);
-    }
-
-    public String getInput() {
-        return scan.nextLine();
     }
 }

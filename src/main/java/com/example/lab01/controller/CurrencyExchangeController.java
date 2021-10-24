@@ -1,54 +1,58 @@
 package com.example.lab01.controller;
 
 import com.example.lab01.controller.exceptions.InvalidCurrencyException;
-import com.example.lab01.model.Currency;
-import com.example.lab01.model.ExchangeRateTable;
+import com.example.lab01.model.CurrencyCode;
+import com.example.lab01.model.Exchange;
 import com.example.lab01.view.ExchangeConsoleView;
 import lombok.AllArgsConstructor;
 
+import java.util.Scanner;
+
 @AllArgsConstructor
 public class CurrencyExchangeController {
-    private final ExchangeRateTable exchangeRateTable;
+    private final CurrencyExchangeService currencyExchangeService;
     private final ExchangeConsoleView view;
     private final Exchange exchange;
+    private final Scanner scan = new Scanner(System.in);
+
+    private final Validator<Float> floatValidator = new FloatValidator();
+    private final Validator<CurrencyCode> currencyCodeValidator = new CurrencyCodeValidator();
 
     public void mainLoop() {
         view.displayGreeting();
         while (true) {
             try {
-                changeFirstCurrency();
-                changeSecondCurrency();
-                changeFirstCurrencyQuantity();
+                view.askForFirstCurrency();
+                updateFirstCurrency(getInput(currencyCodeValidator));
 
-                var result = exchange.calculateResult();
+                view.askForSecondCurrency();
+                updateSecondCurrency(getInput(currencyCodeValidator));
+
+                view.askForFirstCurrencyQuantity();
+                updateFirstCurrencyQuantity(getInput(floatValidator));
+
+                var result = currencyExchangeService.calculateResult(exchange);
                 view.displayResult(result.toString());
-            } catch (InvalidCurrencyException | NumberFormatException exception) {
+            } catch (ValidationException | InvalidCurrencyException exception) {
                 view.displayError(exception.getMessage());
             }
         }
 
     }
 
-    private Float validateFloat(String possibleFloat) {
-        return Float.parseFloat(possibleFloat);
-    }
-
-    private Currency validateCode(String possibleCurrencyCode) {
-        return exchangeRateTable.getByCode(possibleCurrencyCode);
-    }
-
-    public void changeFirstCurrencyQuantity() {
-        var firstCurrencyQuantity = validateFloat(view.askForFirstCurrencyQuantity());
+    public void updateFirstCurrencyQuantity(Float firstCurrencyQuantity) {
         exchange.setFirstCurrencyQuantity(firstCurrencyQuantity);
     }
 
-    public void changeFirstCurrency() {
-        var currency = validateCode(view.askForFirstCurrency());
-        exchange.setFirstCurrency(currency);
+    private void updateFirstCurrency(CurrencyCode currencyCode) {
+        exchange.setFirstCurrencyCode(currencyCode);
     }
 
-    public void changeSecondCurrency() {
-        var currency = validateCode(view.askForSecondCurrency());
-        exchange.setSecondCurrency(currency);
+    private void updateSecondCurrency(CurrencyCode currencyCode) {
+        exchange.setSecondCurrencyCode(currencyCode);
+    }
+
+    public <T> T getInput(Validator<T> validator) {
+        return validator.validate(scan.nextLine());
     }
 }

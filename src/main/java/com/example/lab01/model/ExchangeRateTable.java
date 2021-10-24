@@ -27,9 +27,9 @@ public class ExchangeRateTable {
     @JacksonXmlElementWrapper(useWrapping = false)
     private List<Currency> currencies;
 
-    public Currency getByCode(String currencyCode) {
+    public Currency getByCode(CurrencyCode currencyCode) throws InvalidCurrencyException {
         return currencies.stream()
-                .filter(currency -> currency.getCode().toString().equals(currencyCode.toUpperCase()))
+                .filter(currency -> currency.getCode().equals(currencyCode))
                 .findFirst()
                 .orElseThrow(() -> new InvalidCurrencyException("Unknown currency " + currencyCode));
     }
