@@ -5,8 +5,6 @@ import com.example.lab01.service.CurrencyExchangeService;
 import com.example.lab01.service.ExchangeRateTable;
 import com.example.lab01.view.CurrencyExchangeConsoleView;
 
-import java.io.IOException;
-
 public class App {
     public static void main(String[] args) {
         var app = new App();
