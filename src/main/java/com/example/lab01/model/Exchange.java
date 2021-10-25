@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Exchange {
-    private float firstCurrencyQuantity;
-    private CurrencyCode firstCurrencyCode;
-    private CurrencyCode secondCurrencyCode;
+    private float exchangedCurrencyQuantity;
+    private CurrencyCode exchangedCurrency;
+    private CurrencyCode targetCurrency;
+    private float targetCurrencyQuantity;
 }

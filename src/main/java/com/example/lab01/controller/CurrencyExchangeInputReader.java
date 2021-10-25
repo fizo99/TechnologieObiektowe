@@ -1,10 +1,10 @@
 package com.example.lab01.controller;
 
-import com.example.lab01.controller.validator.CurrencyCodeValidator;
-import com.example.lab01.controller.validator.FloatValidator;
-import com.example.lab01.controller.validator.ValidationException;
-import com.example.lab01.controller.validator.Validator;
 import com.example.lab01.model.CurrencyCode;
+import com.example.lab01.validator.CurrencyCodeValidator;
+import com.example.lab01.validator.FloatValidator;
+import com.example.lab01.validator.ValidationException;
+import com.example.lab01.validator.Validator;
 
 import java.util.Scanner;
 

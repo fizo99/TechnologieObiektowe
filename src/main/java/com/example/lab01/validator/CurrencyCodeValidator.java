@@ -1,4 +1,4 @@
-package com.example.lab01.controller.validator;
+package com.example.lab01.validator;
 
 import com.example.lab01.model.CurrencyCode;
 

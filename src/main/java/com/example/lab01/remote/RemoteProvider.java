@@ -1,4 +1,4 @@
-package com.example.lab01.controller;
+package com.example.lab01.remote;
 
 import java.io.BufferedReader;
 import java.io.IOException;

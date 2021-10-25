@@ -1,9 +1,10 @@
-package com.example.lab01.controller;
+package com.example.lab01.service;
 
 import com.example.lab01.controller.exception.InvalidCurrencyException;
 import com.example.lab01.mapper.XMLMapper;
 import com.example.lab01.model.Currency;
 import com.example.lab01.model.CurrencyCode;
+import com.example.lab01.remote.RemoteProvider;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
@@ -14,6 +15,8 @@ import lombok.Getter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.lab01.model.CurrencyCode.PLN;
 
 @Getter
 @JacksonXmlRootElement(localName = "tabela_kursow")
@@ -32,16 +35,21 @@ public class ExchangeRateTable {
     private ExchangeRateTable() {
     }
 
-    public static ExchangeRateTable getInstance() throws IOException {
-        if (instance == null) {
-            instance = prepareExchangeRateTable();
+    public static ExchangeRateTable getInstance() throws RuntimeException {
+        try {
+            if (instance == null) instance = prepareExchangeRateTable();
+            return instance;
+        } catch (IOException exception) {
+            throw new RuntimeException("Unable to read exchange rate remote data. " + exception.getMessage());
         }
-        return instance;
     }
 
     private static ExchangeRateTable prepareExchangeRateTable() throws IOException {
         var xml = RemoteProvider.get("https://www.nbp.pl/kursy/xml/lasta.xml");
-        return XMLMapper.map(xml, ExchangeRateTable.class);
+        var exchangeRateTable = XMLMapper.map(xml, ExchangeRateTable.class);
+
+        exchangeRateTable.currencies.add(new Currency("złoty (Polska)", 1, PLN, 1.0f));
+        return exchangeRateTable;
     }
 
     public Currency getByCode(CurrencyCode currencyCode) throws InvalidCurrencyException {
