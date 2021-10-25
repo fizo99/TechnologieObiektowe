@@ -23,13 +23,13 @@ public class CurrencyExchangeController {
     private void processExchange() {
         Exchange exchange = new Exchange();
         try {
-            view.askForFirstCurrency();
+            view.askForExchangedCurrency();
             updateExchangedCurrency(exchange);
 
-            view.askForSecondCurrency();
+            view.askForTargetCurrency();
             updateTargetCurrency(exchange);
 
-            view.askForFirstCurrencyQuantity();
+            view.askForExchangedCurrencyQuantity();
             updateExchangedCurrencyQuantity(exchange);
 
             updateTargetCurrencyQuantity(exchange);
