@@ -11,7 +11,7 @@ public class App {
         app.run();
     }
 
-    public void run() {
+    void run() {
         var exchangeView = new CurrencyExchangeConsoleView();
         var exchangeService = new CurrencyExchangeService(ExchangeRateTable.getInstance());
         var controller = new CurrencyExchangeController(exchangeService, exchangeView);

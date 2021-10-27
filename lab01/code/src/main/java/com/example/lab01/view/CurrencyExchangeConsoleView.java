@@ -1,6 +1,7 @@
 package com.example.lab01.view;
 
 import com.example.lab01.model.Exchange;
+import com.example.lab01.service.ExchangeRateTable;
 
 public class CurrencyExchangeConsoleView {
     private final String GREETING_MESSAGE = "Currency exchange";
