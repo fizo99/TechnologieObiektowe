@@ -7,7 +7,7 @@ public class CurrencyExchangeConsoleView {
     private final String ASK_FOR_EXCHANGED_CURRENCY_CODE_MESSAGE = "Wprowadz kod wymienianej waluty";
     private final String ASK_FOR_TARGET_CURRENCY_CODE_MESSAGE = "Wprowadz kod waluty na ktora wymieniasz";
     private final String ASK_FOR_EXCHANGED_CURRENCY_QUANTITY_MESSAGE = "Wprowadz ilosc wymienianej waluty";
-    private final String RESULT_MESSAGE = "Wymieniono %f%s na %f%s";
+    private final String RESULT_MESSAGE = "Wymieniono %.2f%s na %.2f%s";
     private final String ERROR_MESSAGE = "Blad: %s";
 
     public void askForExchangedCurrencyQuantity() {
