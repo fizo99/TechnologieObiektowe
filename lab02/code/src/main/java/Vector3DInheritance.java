@@ -38,7 +38,7 @@ public class Vector3DInheritance extends Vector2D {
 
     @Override
     public double[] getComponents() {
-        var components = getComponents();
+        var components = super.getComponents();
         var x = components[0];
         var y = components[1];
         return new double[]{x, y, z};
