@@ -2,22 +2,60 @@ public class Vector3DDecorator implements IVector{
     private IVector srcVector;
     private double z;
 
+    public Vector3DDecorator(IVector srcVector) {
+        this.srcVector = srcVector;
+        this.z = 0.0f;
+    }
+
+    public Vector3DDecorator(IVector srcVector, double z) {
+        this.srcVector = srcVector;
+        this.z = z;
+    }
+
     public double abs() {
-        return 0;
+        var components = getComponents();
+        var x = components[0];
+        var y = components[1];
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
     public double cdot(IVector param) {
-        return 0;
+        var thisComponents = getComponents();
+        var thisX = thisComponents[0];
+        var thisY = thisComponents[1];
+
+        var otherComponents = param.getComponents();
+        if (otherComponents.length != 3) {
+            throw new IllegalArgumentException("Vectors have different size");
+        }
+        var otherX = otherComponents[0];
+        var otherY = otherComponents[1];
+        var otherZ = otherComponents[2];
+
+        return thisX * otherX + thisY * otherY + this.z * otherZ;
     }
 
     public double[] getComponents() {
-        return new double[0];
+        var components = srcVector.getComponents();
+        return new double[]{components[0], components[1], components[2]};
     }
 
     public Vector3DDecorator cross(IVector param){
-        return null;
+        var thisComponents = srcVector.getComponents();
+        var thisX = thisComponents[0];
+        var thisY = thisComponents[1];
+
+        var otherComponents = param.getComponents();
+        var otherX = thisComponents[0];
+        var otherY = thisComponents[1];
+        var otherZ = otherComponents.length == 3 ? thisComponents[2] : 0.0f;
+
+        var resultX = thisY * otherZ - this.z * otherY;
+        var resultY = this.z * otherX - thisX * otherZ;
+        var resultZ = thisX * otherY - thisY * otherX;
+        return new Vector3DDecorator(new Vector2D(resultX, resultY), resultZ);
     }
     public IVector getSrcV() {
-        return null;
+        return srcVector;
     }
 }
