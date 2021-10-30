@@ -1,20 +1,28 @@
-public class Polar2DAdapter implements IPolar2D, IVector{
+public class Polar2DAdapter implements IPolar2D, IVector {
     private Vector2D srcVector;
+    private double angle;
 
     public Polar2DAdapter(Vector2D srcVector) {
         this.srcVector = srcVector;
+        this.angle = calculateAngle();
+    }
+
+    private double calculateAngle() {
+        var unitVector = new Vector2D(1.0f, 0.0f);
+        var moduleV1 = srcVector.abs();
+        var moduleV2 = unitVector.abs();
+
+        var cosTheta = cdot(unitVector) / (moduleV1 * moduleV2);
+        var sinTheta = Math.sqrt(cosTheta * cosTheta - 1.0);
+
+        var angleRadian = (sinTheta > 0) ? -Math.acos(cosTheta) : Math.acos(cosTheta);
+        var angleDegrees = angleRadian * 180 / Math.PI;
+
+        return angleDegrees;
     }
 
     public double getAngle() {
-//        #TODO
-//        Z użyciem funkcji cyklometrycznych
-//        zwrócić kąt między osią OX, a wektorem
-//                IVector
-        var unitVector = new Vector2D(1.0f,0.0f);
-        var moduleV1 = srcVector.abs();
-        var moduleV2 = unitVector.abs();
-        var cosTheta = cdot(unitVector) / (moduleV1 * moduleV2);
-        return 90.0f-cosTheta*180.0f/Math.PI;
+        return angle;
     }
 
     public double abs() {
@@ -27,5 +35,11 @@ public class Polar2DAdapter implements IPolar2D, IVector{
 
     public double[] getComponents() {
         return this.srcVector.getComponents();
+    }
+
+    @Override
+    public String toString() {
+        var components = getComponents();
+        return String.format("%-25s | Cartesian: [%s,%s] Polar: r=%s,theta=%s", "2D Polar Adapter", components[0], components[1], abs(), getAngle());
     }
 }

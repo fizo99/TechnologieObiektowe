@@ -21,4 +21,10 @@ public class Vector2D implements IVector {
     public double[] getComponents() {
         return new double[]{x,y};
     }
+
+    @Override
+    public String toString(){
+        var components = getComponents();
+        return String.format("%-25s | Cartesian: [%s,%s]","2D Vector", components[0],components[1]);
+    }
 }

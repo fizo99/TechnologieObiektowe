@@ -1,11 +1,6 @@
 public class Vector3DInheritance extends Vector2D {
     private double z;
 
-    public Vector3DInheritance(double x, double y) {
-        super(x, y);
-        this.z = 0.0f;
-    }
-
     public Vector3DInheritance(double x, double y, double z) {
         super(x, y);
         this.z = z;
@@ -65,5 +60,11 @@ public class Vector3DInheritance extends Vector2D {
         var x = components[0];
         var y = components[1];
         return new Vector3DInheritance(x, y, this.z);
+    }
+
+    @Override
+    public String toString(){
+        var components = getComponents();
+        return String.format("%-25s | Cartesian: [%s,%s,%s]", "3D Vector Inheritance", components[0],components[1],components[2]);
     }
 }
