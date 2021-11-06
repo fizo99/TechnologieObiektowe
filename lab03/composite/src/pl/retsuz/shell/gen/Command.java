@@ -23,6 +23,10 @@ public abstract class Command implements ICommand {
         this.man = info;
     }
 
+    public void setGeneralPattern(String pattern) {
+        this.generalPattern = Pattern.compile(prefix + pattern);
+    }
+
     public ICommandVariation get_default() {
         return _default;
     }
@@ -38,7 +42,6 @@ public abstract class Command implements ICommand {
 
     public void perform(String command) throws Exception {
         if (!checkPrefix(command)) {
-
             if (this.next != null)
                 this.next.perform(command);
             else throw new Exception("Polecenie nie istnieje.");
@@ -49,7 +52,6 @@ public abstract class Command implements ICommand {
             if (m.find()) {
                 params = m.group(1);
             }
-
             this._default.processVariation(params);
         }
     }

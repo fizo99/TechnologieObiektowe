@@ -16,7 +16,6 @@ public class Main {
     static IParser dparser;
 
     public static void main(String[] args) {
-
         root = ExampleDelivery.generateExampleTree();
         ctx = new StdContext();
         ctx.setCurrent(root);

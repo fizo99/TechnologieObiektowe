@@ -8,6 +8,6 @@ public class Mv extends Command {
 
     public Mv(IContext ctx, ICommand next) {
         //TODO
-        super("mv", ctx, next, null, "Użycie mv <sciezka>");
+        super("mv", ctx, next, null, "Użycie mv <sciezka> <sciezka>");
     }
 }

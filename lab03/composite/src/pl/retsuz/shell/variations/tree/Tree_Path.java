@@ -13,7 +13,6 @@ public class Tree_Path extends CommandVariation {
 
     @Override
     public void make(String params) {
-
         Composite c = (Composite) (this.getParent().getContext().getCurrent());
         try {
             IComposite elem = c.findElementByPath(params);

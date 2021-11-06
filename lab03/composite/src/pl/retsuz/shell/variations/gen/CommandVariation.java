@@ -16,6 +16,10 @@ public abstract class CommandVariation implements ICommandVariation {
         this.generalPattern = Pattern.compile(pattern);
     }
 
+    public String getPattern() {
+        return this.generalPattern.toString();
+    }
+
     public ICommandVariation getNext() {
         return next;
     }
@@ -40,7 +44,6 @@ public abstract class CommandVariation implements ICommandVariation {
 
     public void processVariation(String params) throws Exception {
         if (!match(params)) {
-
             if (this.next != null)
                 this.next.processVariation(params);
             else throw new Exception("Polecenie nie istnieje.");
