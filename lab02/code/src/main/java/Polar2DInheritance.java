@@ -4,8 +4,6 @@ public class Polar2DInheritance extends Vector2D {
     }
 
     public double getAngle() {
-        var components = getComponents();
-
         var unitVector = new Vector2D(1.0f, 0.0f);
         var moduleV1 = abs();
         var moduleV2 = unitVector.abs();
@@ -14,9 +12,8 @@ public class Polar2DInheritance extends Vector2D {
         var sinTheta = Math.sqrt(cosTheta * cosTheta - 1.0);
 
         var angleRadian = (sinTheta > 0) ? -Math.acos(cosTheta) : Math.acos(cosTheta);
-        var angleDegrees = angleRadian * 180 / Math.PI;
 
-        return angleDegrees;
+        return angleRadian * 180 / Math.PI;
     }
 
     @Override

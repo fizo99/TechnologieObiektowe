@@ -1,6 +1,6 @@
 public class Main {
-    private final static double X_2D = 1.0;
-    private final static double Y_2D = 0.0;
+    private final static double X_2D = 0.0;
+    private final static double Y_2D = 1.0;
 
     private final static double X_3D = 11.0;
     private final static double Y_3D = 2.0;
