@@ -56,7 +56,7 @@ public abstract class DefShell {
         rm.set_default(rm_def);
 
         ICommand mv = new Mv(ctx, rm);
-        ((Command) mv).setGeneralPattern(" *([a-zA-Z0-9.l\\/_]*\\s[a-zA-Z0-9.l\\/_]*)");
+        //((Command) mv).setGeneralPattern(" *([a-zA-Z0-9.l\\/_]*\\s[a-zA-Z0-9.l\\/_]*)");
         ICommandVariation mv_def = new Mv_Def(null, mv);
         ICommandVariation mv_dot = new Mv_Dot(mv_def, mv);
         ICommandVariation mv_ddot = new Mv_ddot(mv_dot, mv);

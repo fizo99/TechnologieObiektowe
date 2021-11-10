@@ -18,14 +18,14 @@ public abstract class Command implements ICommand {
         this.context = ctx;
         this.prefix = prefix;
         this.next = next;
-        this.generalPattern = Pattern.compile(prefix + " *([a-zA-Z0-9.l\\/_]*)");
+        this.generalPattern = Pattern.compile(prefix + " *([a-zA-Z0-9.l\\/_\\s]*)");
         this._default = def;
         this.man = info;
     }
 
-    public void setGeneralPattern(String pattern) {
-        this.generalPattern = Pattern.compile(prefix + pattern);
-    }
+//    public void setGeneralPattern(String pattern) {
+//        this.generalPattern = Pattern.compile(prefix + pattern);
+//    }
 
     public ICommandVariation get_default() {
         return _default;
