@@ -8,7 +8,7 @@ import pl.retsuz.shell.variations.gen.ICommandVariation;
 
 public class Mv_Def extends CommandVariation {
     public Mv_Def(ICommandVariation next, ICommand parent) {
-        super(next, parent, "([a-zA-Z0-9.l\\/_]*\\s[a-zA-Z0-9.l\\/_]*)");
+        super(next, parent, "([a-zA-Z0-9.\\/_]*\\s[a-zA-Z0-9.\\/_]*)");
     }
 
     @Override
