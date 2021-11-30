@@ -15,8 +15,8 @@ public class Event {
         this.isFalseAlarm = isFalseAlarm;
     }
     Event() {
-        this.lat = RandomCoords.randomLat();
-        this.lon = RandomCoords.randomLon();
+        this.lat = Coords.randomLat();
+        this.lon = Coords.randomLon();
         this.type = randomEventType();
         this.isFalseAlarm = Math.random() <= Probabilities.FALSE_ALARM;
     }

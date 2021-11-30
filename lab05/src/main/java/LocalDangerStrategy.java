@@ -1,13 +1,6 @@
-import java.util.List;
-
-public class LocalDangerStrategy implements Strategy{
-    private List<FireTruck> fireTruckList;
-    LocalDangerStrategy(List<FireTruck> fireTrucks) {
-        this.fireTruckList = fireTrucks;
-    }
-
+public class LocalDangerStrategy implements JRGStrategy {
     @Override
-    public void execute() {
-
+    public void execute(JRG jrg, Event event) {
+        // TODO implement strategy for local danger
     }
 }

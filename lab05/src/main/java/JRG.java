@@ -23,13 +23,8 @@ public class JRG {
         this.lat = lat;
         this.lon = lon;
     }
-    public void triggerEvent(EventType eventType) {
-        if(eventType.equals(EventType.FIRE)){
-            new FireStrategy(this.fireTrucks).execute();
-        }else {
-            new LocalDangerStrategy(this.fireTrucks).execute();
-        }
-    }
+
+
     private List<FireTruck> initFireTrucks() {
         List<FireTruck> fireTruckList = new ArrayList<FireTruck>();
         for(int i = 0; i < FIRE_TRUCKS_COUNT; i++){
