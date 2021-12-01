@@ -10,16 +10,13 @@ public class FlyweightFactory {
     private List<Flyweight> names = new ArrayList<>();
 
     public Optional<Coordinates> get(String fullName) {
-        String[] parts = fullName.split(" ");
-        String name = parts[0];
-        Optional<Flyweight> flyWeightForName = names.stream()
-                .filter(flyweight -> flyweight.getPart().equals(name))
-                .findAny()
-                .or(Optional::empty);
+        String[] parts = convertToParts(fullName);
+        String name = extractNameFromParts(parts);
+        Optional<Flyweight> flyWeightForName = getProbableFlyweightForName(name);
 
         if (flyWeightForName.isPresent()) {
             Flyweight wantedFlyWeight = flyWeightForName.get();
-            String[] rest = Arrays.copyOfRange(parts, 1, parts.length);
+            String[] rest = subArrayWithoutName(parts);
             return wantedFlyWeight.getCoordsFor(rest);
         } else {
             return Optional.empty();
@@ -27,22 +24,32 @@ public class FlyweightFactory {
     }
 
     public void put(String fullName, Coordinates coords) {
-        String[] parts = fullName.split(" ");
+        String[] parts = convertToParts(fullName);
+        String[] rest = subArrayWithoutName(parts);
+        String name = extractNameFromParts(parts);
 
-        String name = parts[0];
-        String[] rest = Arrays.copyOfRange(parts, 1, parts.length);
+        Optional<Flyweight> probableName = getProbableFlyweightForName(name);
+        probableName.ifPresentOrElse(
+                        flyweight -> flyweight.put(rest, coords),
+                        () -> names.add(new Flyweight(name, rest, coords)));
+    }
 
-        Optional<Flyweight> probableName = names
-                .stream()
+    private Optional<Flyweight> getProbableFlyweightForName(String name) {
+        return names.stream()
                 .filter(flyweight -> flyweight.getPart().equals(name))
                 .findFirst();
+    }
 
-        if (probableName.isPresent()) {
-            Flyweight flyweight = probableName.get();
-            flyweight.put(rest, coords);
-        } else {
-            names.add(new Flyweight(name, rest, coords));
-        }
+    private String[] subArrayWithoutName(String[] parts) {
+        return Arrays.copyOfRange(parts, 1, parts.length);
+    }
+
+    private String[] convertToParts(String fullName) {
+        return fullName.split(" ");
+    }
+
+    private String extractNameFromParts(String[] parts) {
+        return parts[0];
     }
 
     @Override
