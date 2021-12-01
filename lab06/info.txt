@@ -1,0 +1,22 @@
+flyweight 
+	fabryka imion - powtarzajace sie imiona
+	
+flyweight posiada
+	string(np. imie)
+	lista flyweightow (np. nazwisko lub nazzwisko dwuczlonowe )
+	zbigniew
+		-> ziobro
+			-> maria
+		-> kowalski
+		-> malinowski
+			-> nowak
+		-> lopez
+		-> garcia
+			-> lopez 
+				-> herrera
+
+flyweight factory - tylko imiona
+imiona prowadza nas do nazwisk
+
+
+pobieramy dane przekazujemy do proxy - ono zajmuje sie obsluga bledow i pobierania danych z flyweighta
