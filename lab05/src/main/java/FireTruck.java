@@ -11,4 +11,9 @@ public class FireTruck {
         this.identificator = identificator;
         this.fireTruckState = new Free();
     }
+
+    @Override
+    public String toString() {
+        return identificator;
+    }
 }

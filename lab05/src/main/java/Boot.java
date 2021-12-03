@@ -1,30 +1,28 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Boot {
     private static OutgoingEvents events = new OutgoingEvents();
     private static SKKM skkm = new SKKM();
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static void main(String[] args) {
+
+    private static final Logger log = Logger.getLogger(Boot.class.getName());
+
+    public static void main(String[] args) throws InterruptedException {
         Iterator<Event> it = events.iterator();
-        while (it.hasNext() && skkm.getHaveEnoughFireTrucks().get()) {
+        while (it.hasNext() && skkm.hasTrucksAvailable()) {
             Event event = it.next();
-            try {
-                skkm.processEvent(event);
-            } catch (InterruptedException e) {
-
-            }
+            skkm.processEvent(event);
         }
-        Logger.getGlobal().info("No more cars available. Waiting for jrgs to come back to bases..." );
-        Logger.getGlobal().info(gson.toJson(JRGStrategyWrapper.JRGS));
-        skkm.getProcessedEvents().forEach(thread -> {
-            try {
-                thread.join();
-            }catch (InterruptedException ex){
 
-            }
-        });
+        if(!it.hasNext()){
+            log.info("All events handled! Waiting for firetrucks to come back to bases..." );
+        }else {
+            log.info("No more cars available. Waiting for firetrucks to come back to bases..." );
+            log.debug("FireTrucks state at the end:\n" + gson.toJson(JRGStrategyWrapper.JRGS));
+        }
+
+        skkm.waitForAllUnitsToComeBackToBase();
     }
 }

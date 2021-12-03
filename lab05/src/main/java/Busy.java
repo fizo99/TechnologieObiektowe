@@ -1,3 +1,4 @@
 public class Busy implements FireTruckState {
-    private String asString = "BUSY";
+    //field for debug purposes only;
+    private final String asString = "Busy";
 }

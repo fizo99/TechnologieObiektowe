@@ -1,3 +1,4 @@
 public class Free implements FireTruckState{
-    private String asString = "FREE";
+    //field for debug purposes only;
+    private final String asString = "Free";
 }

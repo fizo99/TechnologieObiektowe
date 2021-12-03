@@ -1,5 +1,5 @@
 import java.util.*;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import java.util.stream.Collectors;
 
 public abstract class JRGStrategyWrapper implements JRGStrategy {
@@ -18,19 +18,30 @@ public abstract class JRGStrategyWrapper implements JRGStrategy {
             )
     );
 
+    private final Logger log = Logger.getLogger(JRGStrategyWrapper.class.getName());
+
     protected void sendTrucks(Event event, int numberOfTrucks) throws UnableToExecuteStrategyException{
         try {
+            long timeToArrival = randomDriveTime();
+            long timeToBeBack = randomDriveTime();
+            long actionTime = event.isFalseAlarm() ? 0 : randomActionTime();
             List<FireTruck> trucksForAction = collectFreeTrucks(event, numberOfTrucks);
-            lockTrucks(trucksForAction);
 
-            Thread.sleep(randomDriveTime());
-            if(!event.isFalseAlarm()) Thread.sleep(randomActionTime());
-            Thread.sleep(randomDriveTime());
+            logEventInfo(timeToArrival, timeToBeBack, actionTime, event);
 
+            lockTrucks(trucksForAction, event);
+            Thread.sleep(timeToArrival + actionTime + timeToBeBack);
             releaseTrucks(trucksForAction);
         } catch(InterruptedException ex) {
-            Logger.getGlobal().info("Interrupt");
+            log.info("Interrupt");
         }
+    }
+
+    private void logEventInfo(long timeToArrival, long timeToBeBack, long actionTime, Event event) {
+        log.info(String.format(
+                "EVENT(%s) - timeToArrival: %ss, timeToBeBack: %ss, actionTime: %ss, eventCoords: %s, eventType: %s",
+                event.getId(), timeToArrival / 1000, timeToBeBack / 1000, actionTime / 1000, event.getCoords(), event.getType()
+        ));
     }
 
     private List<FireTruck> collectFreeTrucks(Event event, int numberOfTrucks) throws UnableToExecuteStrategyException{
@@ -58,17 +69,13 @@ public abstract class JRGStrategyWrapper implements JRGStrategy {
         return Coordinates.distance(event.getCoords(), jrg.getCoords());
     }
 
-    private void lockTrucks(List<FireTruck> freeFireTrucks) {
-        freeFireTrucks.forEach(fireTruck -> {
-            Logger.getGlobal().info(fireTruck.getIdentificator() + " is busy");
-            fireTruck.setFireTruckState(new Busy());
-        });
+    private void lockTrucks(List<FireTruck> freeFireTrucks, Event event) {
+        freeFireTrucks.forEach(fireTruck -> fireTruck.setFireTruckState(new Busy()));
+        log.info(String.format("Sending %s to %s (eventID = %s)", freeFireTrucks,event.getType(),event.getId()));
     }
     private void releaseTrucks(List<FireTruck> busyFireTrucks) {
-        busyFireTrucks.forEach(fireTruck -> {
-            Logger.getGlobal().info(fireTruck.getIdentificator() + " is free");
-            fireTruck.setFireTruckState(new Free());
-        });
+        busyFireTrucks.forEach(fireTruck -> fireTruck.setFireTruckState(new Free()));
+        log.info(busyFireTrucks + " are free");
     }
 
     private long randomDriveTime() {
