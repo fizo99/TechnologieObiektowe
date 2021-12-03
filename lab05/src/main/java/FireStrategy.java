@@ -1,23 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.logging.Logger;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class FireStrategy implements JRGStrategy {
+public class FireStrategy extends JRGStrategyWrapper {
+    private final int NUMBER_OF_TRUCKS_FOR_FIRE_STRATEGY = 3;
     @Override
-    public void execute(JRG jrg, Event event){
+    public void execute(Event event) throws UnableToExecuteStrategyException{
         // TODO implement strategy for fire
-        List<FireTruck> listOfAvailableTrucks = new ArrayList<>(jrg.getFireTrucks())
-                .stream()
-                .filter(fireTruck -> fireTruck.getFireTruckState() instanceof Free)
-                .collect(Collectors.toList());
-
-        List<FireTruck> listOfBusyTrucks = new ArrayList<>();
-        for(int i = 0; i < 3; i++){
-            int randomID = (int) ((Math.random() * listOfAvailableTrucks.size()));
-            listOfBusyTrucks.add(listOfAvailableTrucks.remove(randomID));
-        }
-        listOfBusyTrucks.forEach(fireTruck -> fireTruck.setFireTruckState(new Busy()));
-
-
+        sendTrucks(event, NUMBER_OF_TRUCKS_FOR_FIRE_STRATEGY);
     }
+
 }

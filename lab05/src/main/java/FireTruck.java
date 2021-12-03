@@ -2,6 +2,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class FireTruck {
+    @Getter
     private String identificator;
     @Getter
     @Setter

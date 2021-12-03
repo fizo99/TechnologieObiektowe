@@ -5,18 +5,15 @@ import lombok.ToString;
 @ToString
 public class Event {
     private final EventType type;
-    private final double lat;
-    private final double lon;
+    private final Coordinates coords;
     private final boolean isFalseAlarm;
     Event(double lat, double lon, EventType type, boolean isFalseAlarm) {
-        this.lat = lat;
-        this.lon = lon;
+        this.coords = new Coordinates(lat,lon);
         this.type = type;
         this.isFalseAlarm = isFalseAlarm;
     }
     Event() {
-        this.lat = Coords.randomLat();
-        this.lon = Coords.randomLon();
+        this.coords = new Coordinates();
         this.type = randomEventType();
         this.isFalseAlarm = Math.random() <= Probabilities.FALSE_ALARM;
     }

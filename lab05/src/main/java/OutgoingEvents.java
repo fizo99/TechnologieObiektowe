@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class OutgoingEvents {
-    private static final int NUMBER_OF_EVENTS = 10;
+    private static final int NUMBER_OF_EVENTS = 1000;
     private final List<Event> events;
 
     OutgoingEvents() {
