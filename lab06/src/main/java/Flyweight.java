@@ -1,72 +1,48 @@
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 
 @Getter
 public class Flyweight {
     private String part;
-    private List<Flyweight> subparts = new ArrayList();
+    @Setter
     private Coordinates coords;
-
-    Flyweight(String part, String[] rest, Coordinates coords) {
+    private List<Flyweight> subparts = new ArrayList();
+    Flyweight(String part, String[] rest) {
         this.part = part;
-        if(rest.length == 0){
-            this.coords = coords;
-        }else{
-            String subPart = rest[0];
-            String[] newRest = Arrays.copyOfRange(rest, 1, rest.length);
+        this.updateSubParts(rest);
+    }
+    private void updateSubParts(String[] rest) {
+        if(rest.length != 0) {
+            String part = FlyweightUtils.extractFirstPart(rest);
+            String[] newRest = FlyweightUtils.subArrayWithoutFirstPart(rest);
 
-            Optional<Flyweight> probablePart = subparts.stream()
-                    .filter(flyweight -> flyweight.getPart().equals(subPart))
-                    .findFirst();
-
-            if(probablePart.isPresent()){
-                Flyweight flyweight = probablePart.get();
-                flyweight.put(newRest, coords);
-            }else{
-                subparts.add(new Flyweight(subPart, newRest, coords));
-            }
+            FlyweightUtils.getExistingFlyweight(part, subparts)
+                    .ifPresentOrElse(
+                            flyweight -> flyweight.updateSubParts(newRest),
+                            () -> this.createNewFlyweight(part,newRest)
+                    );
         }
     }
-
-    public void put(String[] rest, Coordinates coords) {
+    public Flyweight get(String[] rest) {
         if(rest.length == 0){
-            this.coords = coords;
-        }else {
-            String subPart = rest[0];
-            String[] newRest = Arrays.copyOfRange(rest, 1, rest.length);
-            Optional<Flyweight> probablePart = subparts.stream()
-                    .filter(flyweight -> flyweight.getPart().equals(subPart))
-                    .findFirst();
-
-            if(probablePart.isPresent()){
-                Flyweight flyweight = probablePart.get();
-                flyweight.put(newRest, coords);
-            }else{
-                subparts.add(new Flyweight(subPart, newRest, coords));
-            }
-        }
-    }
-    public Optional<Coordinates> getCoordsFor(String[] rest) {
-        if(rest.length == 0){
-            return Optional.ofNullable(this.coords);
+            return this;
         } else{
-            String subpart = rest[0];
-            Optional<Flyweight> flyWeightForSubpart = subparts.stream()
-                    .filter(flyweight -> flyweight.getPart().equals(subpart))
-                    .findAny()
-                    .or(Optional::empty);
+            String part = FlyweightUtils.extractFirstPart(rest);
+            String[] newRest = FlyweightUtils.subArrayWithoutFirstPart(rest);
+            Flyweight flyWeightForSubpart = FlyweightUtils.getExistingFlyweight(part, subparts)
+                    .orElseGet(() -> this.createNewFlyweight(part, newRest));
 
-            if(flyWeightForSubpart.isPresent()){
-                String[] restForSubFlyWeights = Arrays.copyOfRange(rest, 1, rest.length);
-                return flyWeightForSubpart.get().getCoordsFor(restForSubFlyWeights);
-            }else{
-                return Optional.empty();
-            }
+            return flyWeightForSubpart.get(newRest);
         }
+    }
+
+    private Flyweight createNewFlyweight(String part, String[] rest) {
+        Flyweight newFlyWeight = new Flyweight(part, rest);
+        subparts.add(newFlyWeight);
+        return newFlyWeight;
     }
 }
