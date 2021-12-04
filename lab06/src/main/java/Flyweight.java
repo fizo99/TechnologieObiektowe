@@ -3,6 +3,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Getter
@@ -37,6 +38,18 @@ public class Flyweight {
                     .orElseGet(() -> this.createNewFlyweight(part, newRest));
 
             return flyWeightForSubpart.get(newRest);
+        }
+    }
+
+    public boolean contains(String[] rest) {
+        if(rest.length == 0){
+            return true;
+        }else{
+            String part = FlyweightUtils.extractFirstPart(rest);
+            String[] newRest = FlyweightUtils.subArrayWithoutFirstPart(rest);
+
+            Optional<Flyweight> flyweight = FlyweightUtils.getExistingFlyweight(part, subparts);
+            return flyweight.map(value -> value.contains(newRest)).orElse(false);
         }
     }
 
