@@ -15,18 +15,18 @@ public class Proxy {
         if(!fullNameValidator.isValid(fullName))
             throw new IllegalArgumentException(fullName + " is invalid full name");
 
-        fullName = fullName.toUpperCase();
-        if(!factory.contains(fullName))
+        String reformattedName = reformatName(fullName);
+        if(!factory.contains(reformattedName))
             throw new IllegalArgumentException(fullName + " is absent");
 
-        return factory.get(fullName.toUpperCase()).getCoords();
+        return factory.get(reformattedName).getCoords();
     }
 
     public void insertNewPerson(String fullName, String x, String y) throws IllegalArgumentException {
         if(!fullNameValidator.isValid(fullName))
             throw new IllegalArgumentException(fullName + " is invalid full name");
-        fullName = fullName.toUpperCase();
-        if(factory.contains(fullName))
+        String reformattedName = reformatName(fullName);
+        if(factory.contains(reformattedName))
             throw new IllegalArgumentException(fullName + " is already present");
 
         if(!coordinateValidator.isValid(x))
@@ -36,8 +36,21 @@ public class Proxy {
 
 
         Coordinates coords = new Coordinates(Double.parseDouble(x), Double.parseDouble(y));
-        Flyweight newPerson = factory.get(fullName.toUpperCase());
+        Flyweight newPerson = factory.get(reformattedName);
         newPerson.setCoords(coords);
+    }
+
+    private String reformatName(String fullname) {
+        String newName = fullname.toLowerCase();
+        String[] parts = newName.split(" ");
+        StringBuilder reformattedName = new StringBuilder();
+        for(String part: parts){
+            reformattedName
+                    .append(part.substring(0, 1).toUpperCase())
+                    .append(part.substring(1))
+                    .append(" ");
+        }
+        return reformattedName.deleteCharAt(reformattedName.length() - 1).toString();
     }
 
 }

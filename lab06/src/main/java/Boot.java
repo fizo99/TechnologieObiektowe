@@ -24,6 +24,6 @@ public class Boot {
     }
 
     private static void fillFactory(FlyweightFactory factory) {
-        fullNames.forEach((name, coords) -> factory.get(name.toUpperCase()).setCoords(coords));
+        fullNames.forEach((name, coords) -> factory.get(name).setCoords(coords));
     }
 }
